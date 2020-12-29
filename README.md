@@ -53,7 +53,7 @@ pip install matplotlib scikit-image opencv-python yacs joblib natsort h5py tqdm
 
 ## train 
 
-1. the GOPRO_dataset path 14号机　/home2/zengwh/DeblurGANv2/GOPRO_Large　\
+1. the GOPRO_dataset path 14号机　/home2/zengwh/DeblurGANv2/GOPRO_Large　
 2. 修改dataloader/dataset_rgb.py 中DataLoaderTrain类，DataLoaderVal类，DataLoaderVal_deblur类中数据集的地址 
 3. 修改相应的yml文件，改变存储的模型文件名，修改训练文件中的Loss_mode类型 
 4. 运行训练文件 
@@ -64,7 +64,7 @@ python train_deblur_xiaotian.py
 ```
 python test_deblur.py --weight your_model_path  --save_model_name you_want_to save_name
 ```
-这里计算的psnr和ssim指标并不准确，需要使用cal_index.py进行计算指标 \
+这里计算的psnr和ssim指标并不准确，需要使用cal_index.py进行计算指标 
 6 修改cal_index.py中的模型指标，并记录psnr和ssim数值
 
 
