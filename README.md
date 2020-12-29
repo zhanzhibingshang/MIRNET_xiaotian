@@ -51,87 +51,24 @@ conda install pytorch=1.1 torchvision=0.3 cudatoolkit=9.0 -c pytorch
 pip install matplotlib scikit-image opencv-python yacs joblib natsort h5py tqdm
 ```
 
-## Training
-1. Download the SIDD-Medium dataset from [here](https://www.eecs.yorku.ca/~kamel/sidd/dataset.php)
-2. Generate image patches
+## train 
+
+1. the GOPRO_dataset path 14号机　/home2/zengwh/DeblurGANv2/GOPRO_Large
+2.　修改dataloader/dataset_rgb.py 中DataLoaderTrain类，DataLoaderVal类，DataLoaderVal_deblur类中数据集的地址
+3. 修改相应的yml文件，改变存储的模型文件名，修改训练文件中的Loss_mode类型
+4. 运行训练文件
 ```
-python generate_patches_SIDD.py --ps 256 --num_patches 300 --num_cores 10
+python train_deblur_xiaotian.py
 ```
-3. Download validation images of SIDD and place them in `../SIDD_patches/val`
- 
-4. Install warmup scheduler
-
+5. 训练完毕，进行测试集生成
 ```
-cd pytorch-gradual-warmup-lr; python setup.py install; cd ..
+python test_deblur.py --weight your_model_path  --save_model_name you_want_to save_name
 ```
-
-5. Train your model with default arguments by running
-
-```
-python train_denoising.py
-```
-
-**Note:** Our model is trained with 2 Nvidia Tesla-V100 GPUs. See [#5](https://github.com/swz30/MIRNet/issues/5) for changing the model parameters.  
-
-## Evaluation
-You can download, at once, the complete repository of MIRNet (including pre-trained models, datasets, results, etc) from this Google Drive  [link](https://drive.google.com/drive/folders/1C2XCufoxxckQ29EkxERFPxL8R3Kx68ZG?usp=sharing), or evaluate individual tasks with the following instructions:
-
-### Image Denoising 
-- Download the [model](https://drive.google.com/file/d/13PGkg3yaFQCvz6ytN99Heh_yyvfxRCdG/view?usp=sharing) and place it in ./pretrained_models/denoising/
-
-#### Testing on SIDD dataset
-- Download sRGB [images](https://drive.google.com/drive/folders/1j5ESMU0HJGD-wU6qbEdnt569z7sM3479?usp=sharing) of SIDD and place them in ./datasets/sidd/
-- Run
-```
-python test_sidd_rgb.py --save_images
-```
-#### Testing on DND dataset
-- Download sRGB [images](https://drive.google.com/drive/folders/1-IBw_J0gdlM6AlqSm3Z7XWTXR-So4xzp?usp=sharing) of DND and place them in ./datasets/dnd/
-- Run
-```
-python test_dnd_rgb.py --save_images
-```
-### Image Super-resolution
-- Download the [models](https://drive.google.com/drive/folders/1yMtXbk6RXoFfmeRRGu1XfNFSHH6bSUoR?usp=sharing) and place them in ./pretrained_models/super_resolution/
-- Download [images](https://drive.google.com/drive/folders/1mAr0YCqBJFXsnOnOp0WWxkAiGF9DQAe8?usp=sharing) of different scaling factor and place them in ./datasets/super_resolution/
-- Run
-```
-python test_super_resolution.py --save_images --scale 3
-python test_super_resolution.py --save_images --scale 4
-```
-
-### Image Enhancement 
-#### Testing on LOL dataset
-- Download the LOL [model](https://drive.google.com/file/d/1t_FcBuMZD5th2KWVVNXYGJ7bMz5ZAWvF/view?usp=sharing) and place it in ./pretrained_models/enhancement/
-- Download [images](https://drive.google.com/drive/folders/1LR6J4tkG6DLHqsipsMgHgU_p1xOZjdAA?usp=sharing) of LOL dataset and place them in ./datasets/lol/
-- Run
-```
-python test_enhancement.py --save_images --input_dir ./datasets/lol/ --result_dir ./results/enhancement/lol/ --weights ./pretrained_models/enhancement/model_lol.pth
-```
-#### Testing on Adobe-MIT FiveK dataset
-- Download the FiveK [model](https://drive.google.com/file/d/1BsXOvhMz2z80E_V93dgD6QaEspZE0w-u/view?usp=sharing) and place it in ./pretrained_models/enhancement/
-- Download some sample [images](https://drive.google.com/drive/folders/1tyrELge59GdhZ18VR6yFwVb5Kenq2hSd?usp=sharing) of fiveK dataset and place them in ./datasets/fivek_sample_images/
-- Run
-```
-python test_enhancement.py --save_images --input_dir ./datasets/fivek_sample_images/ --result_dir ./results/enhancement/fivek/ --weights ./pretrained_models/enhancement/model_fivek.pth
-```
+这里计算的psnr和ssim指标并不准确，需要使用cal_index.py进行计算指标
+6 修改cal_index.py中的模型指标，并记录psnr和ssim数值
 
 
 
-## Results
-Experiments are performed on five real image datasets for different image processing tasks including, image denoising, super-resolution and image enhancement. Images produced by MIRNet can be downloaded from Google Drive [link](https://drive.google.com/drive/folders/1z6bFP7ydBaQOPmk8n1byYY0xcLx7aBHp?usp=sharing).
-
-### Image Denoising
-
-<img src = "https://i.imgur.com/te123qk.png" >
-
-### Image Super-resolution 
-
-<img src = "https://i.imgur.com/pBdUPXa.png" >
-
-### Image Enhancement
-
-<img src = "https://i.imgur.com/TZRBlux.png" >
 
 ## Citation
 If you use MIRNet, please consider citing:
