@@ -65,6 +65,7 @@ python train_deblur_xiaotian.py
 python test_deblur.py --weight your_model_path  --save_model_name you_want_to save_name
 ```
 这里计算的psnr和ssim指标并不准确，需要使用cal_index.py进行计算指标 
+
 6 修改cal_index.py中的模型指标，并记录psnr和ssim数值
 
 
